@@ -163,3 +163,4 @@ cython_debug/
 /data_indices
 /records
 /demo_nb
+/result_plot
