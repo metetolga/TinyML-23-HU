@@ -5,8 +5,9 @@ from torch.utils.data import DataLoader
 import torch.nn as nn
 import torch.optim as optim
 from utils import ToTensor, CustomDataset, save_model_and_stats, GaussianNoise, FlipSeg
-from models.model import NeuralNet
+from model import NeuralNet
 
+from datetime import datetime
 
 def main():
     EPOCH = args.epoch
@@ -45,12 +46,7 @@ def main():
 
     trainloader = DataLoader(trainset, batch_size=BATCH_SIZE, shuffle=True, num_workers=0)
     testloader = DataLoader(testset, batch_size=BATCH_SIZE_TEST, shuffle=True, num_workers=0)
-    
-    first_batch = next(iter(trainloader))
-    
-    # print(first_batch["data"].shape)
-    # print(first_batch["label"].shape)
-    
+        
     print("Training Dataset loading finish.")
 
     criterion = nn.CrossEntropyLoss()
@@ -63,6 +59,7 @@ def main():
     test_acc = []
 
     print("Start training")
+    
     for epoch in range(epoch_num):  # loop over the dataset multiple times (specify the #epoch)
         running_loss = 0.0
         correct = 0.0
@@ -89,9 +86,7 @@ def main():
 
             running_loss += loss.item()
             i += 1
-
-        print('[Epoch, Batches] is [%d, %5d] \nTrain Acc: %.5f Train loss: %.5f' %
-              (epoch + 1, j, accuracy / j, running_loss / j))
+        print('Epoch is %d \n Train Acc: %.5f Train loss: %.5f' % (epoch + 1, accuracy / j, running_loss / j))
 
         train_loss.append(running_loss / i)
         train_acc.append((accuracy / i).item())
